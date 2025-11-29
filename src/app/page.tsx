@@ -112,8 +112,6 @@ export default function HomePage() {
   useEffect(() => {
     if (restaurants.length === 0) return;
 
-    let ignore = false;
-
     async function loadStatus() {
       const entries = await Promise.all(
         restaurants.map(async (r) => {
@@ -121,27 +119,19 @@ export default function HomePage() {
             const status = await Api.getOpenStatus(r.id);
             return [r.id, status.is_currently_open] as const;
           } catch {
-            return [r.id, true] as const;
+            return [r.id, true] as const; // fallback
           }
         }),
       );
 
-      if (!ignore) {
-        setOpenStatusMap(Object.fromEntries(entries));
-      }
+      setOpenStatusMap(Object.fromEntries(entries));
     }
 
     loadStatus();
-
-    return () => {
-      ignore = true;
-    };
   }, [restaurants]);
 
   useEffect(() => {
     if (restaurants.length === 0) return;
-
-    let ignore = false;
 
     async function loadPriceRanges() {
       const uniqueIds = Array.from(
@@ -159,16 +149,10 @@ export default function HomePage() {
         }),
       );
 
-      if (!ignore) {
-        setPriceRangeMap(Object.fromEntries(entries));
-      }
+      setPriceRangeMap(Object.fromEntries(entries));
     }
 
     loadPriceRanges();
-
-    return () => {
-      ignore = true;
-    };
   }, [restaurants]);
 
   if (loading) {
