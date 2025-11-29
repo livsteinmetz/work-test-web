@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
-
 :root {
   --color-white: #ffffff;
-  --color-off-white: #fafafa; 
+  --color-off-white: #fafafa;
   --color-black: #000000;
-  --color-green: #00703a; 
-  --color-stroke: #e5e5e5;  
+  --color-green: #00703a;
+  --color-stroke: #e5e5e5;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: var(--color-off-white);

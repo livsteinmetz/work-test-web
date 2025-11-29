@@ -9,7 +9,6 @@ interface Props {
 export function Layout({ children }: Props) {
   return (
     <div className="relative min-h-screen bg-offwhite flex">
-
       <div className="fixed top-6 left-6 z-50">
         <img
           src="/images/munchies-logo.png"

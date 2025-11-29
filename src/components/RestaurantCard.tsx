@@ -15,30 +15,27 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
     <Card
       className={[
         "relative flex flex-col justify-between",
-        "p-4",              
-        "min-h-[202px]",     
+        "p-4",
+        "min-h-[202px]",
         closed ? "opacity-60" : "",
       ].join(" ")}
     >
       <div className="mb-6 flex h-[28px] w-[142px] items-center gap-2">
         <span
-          className={
-            [
-              "inline-flex items-center gap-1",
-              "h-[28px] min-w-[63px]",
-              "rounded-[88px] border-[0.6px] border-[#0000001A]",
-              "pl-[10px] pr-3 py-2",
-              "text-[12px] tracking-[-0.5px]",
-              "bg-surface",
-              "shadow-[-4px_2px_10px_0px_#00000003,-16px_9px_18px_0px_#00000003]",
-              closed ? "text-muted" : "text-foreground",
-            ].join(" ")
-          }
+          className={[
+            "inline-flex items-center gap-1",
+            "h-[28px] min-w-[63px]",
+            "rounded-[88px] border-[0.6px] border-[#0000001A]",
+            "pl-[10px] pr-3 py-2",
+            "text-[12px] tracking-[-0.5px]",
+            "bg-surface",
+            "shadow-[-4px_2px_10px_0px_#00000003,-16px_9px_18px_0px_#00000003]",
+            closed ? "text-muted" : "text-foreground",
+          ].join(" ")}
         >
           <span
             className={
-              "h-2 w-2 rounded-full " +
-              (closed ? "bg-[#000000]" : "bg-action")
+              "h-2 w-2 rounded-full " + (closed ? "bg-[#000000]" : "bg-action")
             }
           />
           {closed ? "Closed" : "Open"}
@@ -58,7 +55,6 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
           {restaurant.deliveryTimeMinutes} min
         </span>
       </div>
-
 
       <img
         src={restaurant.imageUrl}

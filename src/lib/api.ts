@@ -64,7 +64,6 @@ function mapRestaurant(api: RestaurantApi): Restaurant {
   };
 }
 
-
 export const Api = {
   async getRestaurants(): Promise<Restaurant[]> {
     const data = await getJson<RestaurantsResponse>("/restaurants");

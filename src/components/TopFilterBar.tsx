@@ -23,14 +23,12 @@ export function TopFilterBar({
           return (
             <Card
               key={f.id}
-              className={
-                [
-                  "relative w-[160px] h-[80px] flex-shrink-0 cursor-pointer transition",
-                  active
-                    ? "bg-selected text-white border-selected"
-                    : "bg-surface text-foreground",
-                ].join(" ")
-              }
+              className={[
+                "relative w-[160px] h-[80px] flex-shrink-0 cursor-pointer transition",
+                active
+                  ? "bg-selected text-white border-selected"
+                  : "bg-surface text-foreground",
+              ].join(" ")}
             >
               <button
                 type="button"
