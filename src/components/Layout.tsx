@@ -17,7 +17,7 @@ export function Layout({ children }: Props) {
         />
       </div>
 
-      <div className="flex w-full gap-10 px-[40px] pt-[144px] pb-16">
+      <div className="flex w-full px-[40px] pt-[144px] pb-16">
         {children}
       </div>
     </div>

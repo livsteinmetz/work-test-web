@@ -1,65 +1,212 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+import { useEffect, useMemo, useState } from "react";
+import { Api } from "../lib/api";
+import type { Restaurant, Filter } from "../types/api";
+
+import { Layout } from "../components/Layout";
+import { SidebarFilters } from "../components/SidebarFilters";
+import { TopFilterBar } from "../components/TopFilterBar";
+import { RestaurantGrid } from "../components/RestaurantGrid";
+
+function getDeliveryBucket(minutes: number): string {
+  if (minutes <= 10) return "0-10";
+  if (minutes <= 30) return "10-30";
+  if (minutes <= 60) return "30-60";
+  return "60+";
+}
+
+export default function HomePage() {
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [filters, setFilters] = useState<Filter[]>([]);
+  const [selectedFilterIds, setSelectedFilterIds] = useState<string[]>([]);
+
+  const [selectedDeliveryBuckets, setSelectedDeliveryBuckets] = useState<
+    string[]
+  >([]);
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
+
+  const [priceRangeMap, setPriceRangeMap] = useState<Record<string, string>>(
+    {},
+  );
+  const [openStatusMap, setOpenStatusMap] = useState<Record<string, boolean>>(
+    {},
+  );
+  const [loading, setLoading] = useState(true);
+
+  function toggleFilter(id: string) {
+    setSelectedFilterIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }
+
+  function toggleDeliveryBucket(bucketId: string) {
+    setSelectedDeliveryBuckets((prev) =>
+      prev.includes(bucketId)
+        ? prev.filter((x) => x !== bucketId)
+        : [...prev, bucketId],
+    );
+  }
+
+  function togglePriceRange(range: string) {
+    setSelectedPriceRanges((prev) =>
+      prev.includes(range) ? prev.filter((x) => x !== range) : [...prev, range],
+    );
+  }
+
+  const priceRanges = useMemo(() => {
+    const ranges = new Set<string>();
+    Object.values(priceRangeMap).forEach((range) => {
+      if (range) ranges.add(range);
+    });
+    return Array.from(ranges);
+  }, [priceRangeMap]);
+
+  const filteredRestaurants = useMemo(() => {
+    let result = restaurants;
+
+    if (selectedFilterIds.length > 0) {
+      result = result.filter((r) =>
+        r.filterIds.some((id) => selectedFilterIds.includes(id)),
+      );
+    }
+
+    if (selectedDeliveryBuckets.length > 0) {
+      result = result.filter((r) => {
+        const bucket = getDeliveryBucket(r.deliveryTimeMinutes);
+        return selectedDeliveryBuckets.includes(bucket);
+      });
+    }
+
+    if (selectedPriceRanges.length > 0) {
+      result = result.filter((r) => {
+        const range = priceRangeMap[r.priceRangeId];
+        if (!range) return false;
+        return selectedPriceRanges.includes(range);
+      });
+    }
+
+    return result;
+  }, [
+    restaurants,
+    selectedFilterIds,
+    selectedDeliveryBuckets,
+    selectedPriceRanges,
+    priceRangeMap,
+  ]);
+
+  useEffect(() => {
+    async function load() {
+      const [r, f] = await Promise.all([
+        Api.getRestaurants(),
+        Api.getFilters(),
+      ]);
+      setRestaurants(r);
+      setFilters(f);
+      setLoading(false);
+    }
+
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (restaurants.length === 0) return;
+
+    let ignore = false;
+
+    async function loadStatus() {
+      const entries = await Promise.all(
+        restaurants.map(async (r) => {
+          try {
+            const status = await Api.getOpenStatus(r.id);
+            return [r.id, status.is_currently_open] as const;
+          } catch {
+            return [r.id, true] as const;
+          }
+        }),
+      );
+
+      if (!ignore) {
+        setOpenStatusMap(Object.fromEntries(entries));
+      }
+    }
+
+    loadStatus();
+
+    return () => {
+      ignore = true;
+    };
+  }, [restaurants]);
+
+  useEffect(() => {
+    if (restaurants.length === 0) return;
+
+    let ignore = false;
+
+    async function loadPriceRanges() {
+      const uniqueIds = Array.from(
+        new Set(restaurants.map((r) => r.priceRangeId)),
+      );
+
+      const entries = await Promise.all(
+        uniqueIds.map(async (id) => {
+          try {
+            const pr = await Api.getPriceRange(id);
+            return [id, pr.range] as const;
+          } catch {
+            return [id, ""] as const;
+          }
+        }),
+      );
+
+      if (!ignore) {
+        setPriceRangeMap(Object.fromEntries(entries));
+      }
+    }
+
+    loadPriceRanges();
+
+    return () => {
+      ignore = true;
+    };
+  }, [restaurants]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        Loading…
       </main>
-    </div>
+    );
+  }
+
+  return (
+    <Layout>
+      <SidebarFilters
+        filters={filters}
+        selectedFilterIds={selectedFilterIds}
+        toggleFilter={toggleFilter}
+        selectedDeliveryBuckets={selectedDeliveryBuckets}
+        toggleDeliveryBucket={toggleDeliveryBucket}
+        priceRanges={priceRanges}
+        selectedPriceRanges={selectedPriceRanges}
+        togglePriceRange={togglePriceRange}
+      />
+
+      <div className="flex-1 min-w-0">
+        <TopFilterBar
+          filters={filters}
+          selectedFilterIds={selectedFilterIds}
+          toggleFilter={toggleFilter}
+        />
+
+        <h2 className="px-6 mb-6 text-[40px] font-normal tracking-[-0.5px]">
+          Restaurants
+        </h2>
+        <RestaurantGrid
+          restaurants={filteredRestaurants}
+          openStatusMap={openStatusMap}
+        />
+      </div>
+    </Layout>
   );
 }
