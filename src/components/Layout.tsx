@@ -2,23 +2,23 @@
 
 import type { ReactNode } from "react";
 
-interface Props {
-  children: ReactNode;
-}
-
-export function Layout({ children }: Props) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="relative min-h-screen bg-offwhite flex">
-      <div className="fixed top-6 left-6 z-50">
+    <div className="min-h-screen bg-offwhite text-black">
+
+      {/* Consistent Header */}
+      <header className="w-full px-6 pt-12 flex items-center gap-2">
         <img
           src="/images/munchies-logo.png"
           alt="Munchies"
-          className="h-6 md:h-10 w-auto"
+         className="h-6 md:h-10 w-auto"
         />
-      </div>
-      <div className="flex w-full pt-[144px] pb-16 gap-6 lg:px-[40px]">
+      </header>
+
+      {/* Page Content */}
+      <main className="flex w-full pb-16 gap-6 lg:px-[40px]">
         {children}
-      </div>
+      </main>
     </div>
   );
 }

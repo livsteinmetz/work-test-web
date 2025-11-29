@@ -47,7 +47,7 @@ export function SidebarFilters({
   togglePriceRange,
 }: SidebarFiltersProps) {
   return (
-    <aside className="hidden lg:block w-[239px]">
+    <aside className="hidden lg:block w-[239px] py-4 pt-12">
       <Card className="h-[764px] rounded-[10px] flex flex-col gap-8 p-6">
         {/* Title */}
         <h2 className="text-[24px] font-normal tracking-[-0.5px] mb-2">
