@@ -39,6 +39,7 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
             }
           />
           {closed ? "Closed" : "Open"}
+          {/* To do: add in Opens ____ at ____ message and disabled state. Currently only get boolean open true/false state from api */}
         </span>
 
         <span
@@ -55,7 +56,7 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
           {restaurant.deliveryTimeMinutes} min
         </span>
       </div>
-
+      {/* To do: add in loading state and fallback for images */}
       <img
         src={restaurant.imageUrl}
         alt=""
@@ -63,10 +64,7 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
           absolute
           pointer-events-none
           object-contain
-          h-[100px] w-[100px]
-          -top-6 -right-6
-          sm:h-[120px] sm:w-[120px] sm:-top-7 sm:-right-7
-          md:h-[140px] md:w-[140px] md:-top-8 md:-right-8
+          h-[140px] w-[140px] -top-8 -right-8
         "
       />
 

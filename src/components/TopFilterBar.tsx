@@ -15,7 +15,7 @@ export function TopFilterBar({
   toggleFilter,
 }: Props) {
   return (
-    <div className="w-full bg-offwhite px-6 py-4 overflow-x-auto">
+    <div className="w-full bg-offwhite px-6 py-4 md:pt-12 overflow-x-auto">
       <div className="flex gap-4 min-w-max">
         {filters.map((f) => {
           const active = selectedFilterIds.includes(f.id);
@@ -45,7 +45,7 @@ export function TopFilterBar({
                 >
                   {f.name}
                 </span>
-
+                {/* To do: add in loading state and fallback for images */}
                 <img
                   src={f.imageUrl}
                   alt={f.name}
