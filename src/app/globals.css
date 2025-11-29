@@ -26,7 +26,6 @@ body {
   .bg-surface {
     background-color: var(--color-white);
   }
-
   .bg-offwhite {
     background-color: var(--color-off-white);
   }

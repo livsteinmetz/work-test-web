@@ -13,11 +13,12 @@ export function Layout({ children }: Props) {
         <img
           src="/images/munchies-logo.png"
           alt="Munchies"
-          className="h-10 w-auto"
+          className="h-6 md:h-10 w-auto"
         />
       </div>
-
-      <div className="flex w-full px-[40px] pt-[144px] pb-16">{children}</div>
+      <div className="flex w-full pt-[144px] pb-16 gap-6 lg:px-[40px]">
+        {children}
+      </div>
     </div>
   );
 }

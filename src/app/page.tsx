@@ -188,7 +188,7 @@ export default function HomePage() {
           toggleFilter={toggleFilter}
         />
 
-        <h2 className="px-6 mb-6 text-[20px] font-normal tracking-[-0.5px] leading-[100%] lg:text-[40px]">
+        <h2 className="px-6 mb-6 text-[20px] font-normal tracking-[-0.5px] leading-[100%] md:text-[40px]">
           Restaurants
         </h2>
 
