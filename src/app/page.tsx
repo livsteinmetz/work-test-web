@@ -8,6 +8,7 @@ import { Layout } from "../components/Layout";
 import { SidebarFilters } from "../components/SidebarFilters";
 import { TopFilterBar } from "../components/TopFilterBar";
 import { RestaurantGrid } from "../components/RestaurantGrid";
+import { MobileDeliveryFilterBar } from "@/components/MobileFilters";
 
 function getDeliveryBucket(minutes: number): string {
   if (minutes <= 10) return "0-10";
@@ -177,6 +178,10 @@ export default function HomePage() {
       />
 
       <div className="flex-1 min-w-0">
+        <MobileDeliveryFilterBar
+          selectedDeliveryBuckets={selectedDeliveryBuckets}
+          toggleDeliveryBucket={toggleDeliveryBucket}
+        />
         <TopFilterBar
           filters={filters}
           selectedFilterIds={selectedFilterIds}

@@ -14,17 +14,17 @@ interface SidebarFiltersProps {
   togglePriceRange: (range: string) => void;
 }
 
-const DELIVERY_OPTIONS = [
+export const DELIVERY_OPTIONS = [
   { id: "0-10", label: "0-10 min" },
   { id: "10-30", label: "10-30 min" },
   { id: "30-60", label: "30-60 min" },
   { id: "60+", label: "1 hour+" },
 ];
 
-const SECTION_TITLE_CLASS =
+export const SECTION_TITLE_CLASS =
   "uppercase text-[12px] font-semibold tracking-[-0.5px] text-black/40 mb-2";
 
-const CHIP_BASE_CLASS = [
+export const CHIP_BASE_CLASS = [
   "inline-flex items-center justify-center",
   "min-w-fit h-[31px]",
   "rounded-[8px] border-[0.6px]",
@@ -33,8 +33,8 @@ const CHIP_BASE_CLASS = [
   "transition",
 ].join(" ");
 
-const CHIP_ACTIVE_CLASS = "bg-selected text-white border-black";
-const CHIP_INACTIVE_CLASS = "bg-surface text-black border-[#0000001A]";
+export const CHIP_ACTIVE_CLASS = "bg-selected text-white border-black";
+export const CHIP_INACTIVE_CLASS = "bg-surface text-black border-[#0000001A]";
 
 export function SidebarFilters({
   filters,
