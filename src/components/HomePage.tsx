@@ -68,7 +68,7 @@ export default function HomePage() {
 
     if (selectedFilterIds.length > 0) {
       result = result.filter((r) =>
-        r.filterIds.some((id) => selectedFilterIds.includes(id)),
+        r.filterIds?.some((id) => selectedFilterIds.includes(id)),
       );
     }
 
@@ -132,7 +132,7 @@ export default function HomePage() {
   }, [restaurants]);
 
   useEffect(() => {
-    if (restaurants.length === 0) return;
+    if (!restaurants || restaurants.length === 0) return;
 
     async function loadPriceRanges() {
       const uniqueIds = Array.from(
@@ -143,8 +143,9 @@ export default function HomePage() {
         uniqueIds.map(async (id) => {
           try {
             const pr = await Api.getPriceRange(id);
-            return [id, pr.range] as const;
-          } catch {
+            return [id, pr?.range ?? ""] as const;
+          } catch (err) {
+            console.error("Failed to load price range", id, err);
             return [id, ""] as const;
           }
         }),
@@ -196,6 +197,13 @@ export default function HomePage() {
           restaurants={filteredRestaurants}
           openStatusMap={openStatusMap}
         />
+
+        {filteredRestaurants.length === 0 && (
+          <p className="px-6 text-[14px] text-black/60 mt-2">
+            Oops! No restaurants match your current filters. Try removing a filter or
+            two.
+          </p>
+        )}
       </div>
     </Layout>
   );
