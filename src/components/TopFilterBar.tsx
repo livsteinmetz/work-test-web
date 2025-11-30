@@ -2,6 +2,7 @@
 
 import type { Filter } from "../types/api";
 import { Card } from "./Card";
+import { ImageWithSkeleton } from "./ImageWithSkeleton";
 
 interface Props {
   filters: Filter[];
@@ -45,8 +46,8 @@ export function TopFilterBar({
                 >
                   {f.name}
                 </span>
-                {/* To do: add in loading state and fallback for images */}
-                <img
+
+                <ImageWithSkeleton
                   src={f.imageUrl}
                   alt={f.name}
                   className="

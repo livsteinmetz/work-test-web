@@ -2,6 +2,7 @@
 
 import type { Restaurant } from "../types/api";
 import { Card } from "./Card";
+import { ImageWithSkeleton } from "./ImageWithSkeleton";
 
 interface Props {
   restaurant: Restaurant;
@@ -39,7 +40,6 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
             }
           />
           {closed ? "Closed" : "Open"}
-          {/* To do: add in Opens ____ at ____ message and disabled state. Currently only get boolean open true/false state from api */}
         </span>
 
         <span
@@ -56,8 +56,7 @@ export function RestaurantCard({ restaurant, isOpen }: Props) {
           {restaurant.deliveryTimeMinutes} min
         </span>
       </div>
-      {/* To do: add in loading state and fallback for images */}
-      <img
+      <ImageWithSkeleton
         src={restaurant.imageUrl}
         alt=""
         className="
