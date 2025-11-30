@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "prettier",
+    "plugin:storybook/recommended",
+    "plugin:css-modules/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "css-modules/no-unused-class": [
+      2,
+      {
+        "camelCase": true
+      }
+    ],
+    "css-modules/no-undef-class": [
+      2,
+      {
+        "camelCase": true
+      }
+    ]
+  },
+  "plugins": ["prettier", "css-modules"],
+  "ignorePatterns": [
+    "common/mantine/theme/*",
+    "common/mantine/theme.tsx",
+    "common/mantine/calderTheme.tsx",
+    "common/types/sanity.ts",
+    "main-site/src/types",
+    "members/src/mantine/barnesTheme.tsx",
+    "**/sst.config.ts",
+    "server/dist/*"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss"
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "custom-property-pattern": null,
+    "scss/percent-placeholder-pattern": null,
+    "scss/at-mixin-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ]
+  },
+  "ignoreFiles": [
+    "common/coverage/lcov-report/base.css",
+    "common/coverage/lcov-report/prettify.css",
+    "main-site/coverage/lcov-report/base.css",
+    "main-site/coverage/lcov-report/prettify.css",
+    "main-site/out/_next/static/css/*"
+  ]
+}
